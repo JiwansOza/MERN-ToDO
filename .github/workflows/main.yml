@@ -1,0 +1,36 @@
+name: Deploy React App to Mac
+
+on:
+  push:
+    branches:
+      - main # Deploy on push to the main branch
+
+jobs:
+  build:
+    runs-on: self-hosted # Use self-hosted runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16" # Specify Node.js version
+
+      - name: Install dependencies
+        run: npm install
+        shell: bash # Use bash shell
+
+      - name: Build the app
+        run: npm run build
+        shell: bash # Use bash shell
+
+      - name: Deploy to Local Server
+        run: |
+          # Add your deployment commands here
+          echo "Deploying to local server"
+          # Example commands to copy files to your local server or restart services
+          # cp -r build/* /path/to/your/local/server/directory/
+          # Restart your server if necessary
+        shell: bash # Use bash shell
