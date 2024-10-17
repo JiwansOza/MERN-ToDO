@@ -5,6 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js", // Add this line to start the backend server
+    "build": "echo 'No build step for backend'", // Dummy build command
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
