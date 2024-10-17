@@ -3,11 +3,14 @@ name: Deploy React App to Mac
 on:
   push:
     branches:
-      - main # Deploy on push to the main branch
+      - main # Trigger the workflow on push to the main branch
+  pull_request:
+    branches:
+      - main # Run on pull requests to the main branch
 
 jobs:
   build:
-    runs-on: self-hosted # Use self-hosted runner
+    runs-on: self-hosted # Use your self-hosted runner
 
     steps:
       - name: Checkout repository
@@ -16,21 +19,37 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16" # Specify Node.js version
+          node-version: '16' # Specify Node.js version
 
-      - name: Install dependencies
+      - name: Install Backend Dependencies
+        working-directory: ./backend # Navigate to the backend directory
         run: npm install
-        shell: bash # Use bash shell
+        shell: bash
 
-      - name: Build the app
+      - name: Build Backend
+        working-directory: ./backend # Build the backend
         run: npm run build
-        shell: bash # Use bash shell
+        shell: bash
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend # Navigate to the frontend directory
+        run: npm install
+        shell: bash
+
+      - name: Build Frontend
+        working-directory: ./frontend # Build the frontend
+        run: npm run build
+        shell: bash
+
+      - name: Run Tests
+        working-directory: ./backend # Run tests in the backend directory
+        run: npm test
+        shell: bash
+        continue-on-error: true # Optional: Continue even if tests fail
 
       - name: Deploy to Local Server
         run: |
-          # Add your deployment commands here
-          echo "Deploying to local server"
-          # Example commands to copy files to your local server or restart services
-          # cp -r build/* /path/to/your/local/server/directory/
-          # Restart your server if necessary
-        shell: bash # Use bash shell
+          echo "Deploying to local server..."
+          # Replace with your actual deployment command
+          # e.g., cp -r frontend/build/* /path/to/your/local/server/
+        shell: bash
